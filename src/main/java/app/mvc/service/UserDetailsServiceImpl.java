@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private CredentialsDAO credentialsDao;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         Optional<Credentials> byUsername = credentialsDao.findByUsername(username);
         if (byUsername.isPresent()) {
             Credentials credentials = byUsername.get();

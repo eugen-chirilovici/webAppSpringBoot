@@ -28,6 +28,10 @@ public class CredentialsDAO {
                 "frosca",
                 "$2a$10$m1sRJuy0ZvX69ey/7Xd2zuWAG7ddouWqC..ImkHawJTrm8QiwSSA.",
                 RoleType.ROLE_USER));
+        listOfCredentials.add(new Credentials(id++,
+                "test",
+                "$2a$04$8rQBvhZGgymq/qO6FruBrusDknVfwFHYiHEEfZHAOO6a5JYtkXj2O",
+                RoleType.ROLE_ADMIN));
     }
 
     public Long addCredential(Credentials credentials, RoleType roleType) {

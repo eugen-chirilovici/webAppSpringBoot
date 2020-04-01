@@ -17,6 +17,7 @@ public class UsersDAO {
         listOfUsers.add(new User(id++, "Eugen", "Chirilovici", 0L));
         listOfUsers.add(new User(id++, "Ciprian", "Nicuta", 1L));
         listOfUsers.add(new User(id++, "Filip", "Rosca", 2L));
+        listOfUsers.add(new User(id++, "Test", "Role", 3L));
     }
 
     public Long addUser(User user) {

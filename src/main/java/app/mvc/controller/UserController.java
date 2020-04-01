@@ -2,7 +2,6 @@ package app.mvc.controller;
 
 import app.mvc.dto.UserDTO;
 import app.mvc.model.enums.RoleType;
-import app.mvc.service.AuthenticationService;
 import app.mvc.service.UserService;
 import app.mvc.util.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,10 @@ import java.util.List;
 @Controller
 public class UserController {
 
+    private static final String MESSAGE = "message";
+    private static final String USERS = "users";
+    private static final String TITLE = "title";
+
     @Autowired
     private UserService userService;
 
@@ -28,14 +31,13 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
-        model.addAttribute("message", "Hi there! Please, log in if you want to access our page");
+        model.addAttribute(MESSAGE, "Hi there! Please, log in if you want to access our page");
         return "index";
     }
 
     @RequestMapping(value = "/welcome")
     public String submit() {
         loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
 
         if (loggedUser != null) {
             if (loggedUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.getValue()))) {
@@ -49,9 +51,9 @@ public class UserController {
 
     @RequestMapping(value = "/allusers", method = RequestMethod.GET)
     public String showAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("title", "Admin Panel");
-        model.addAttribute("message", "Here are all our users:");
+        model.addAttribute(USERS, userService.getAllUsers());
+        model.addAttribute(TITLE, "Admin Panel");
+        model.addAttribute(MESSAGE, "Here are all our users:");
         return "adminCab";
     }
 
@@ -60,9 +62,9 @@ public class UserController {
         List<UserDTO> listOfUsers = new ArrayList<>();
         listOfUsers.add(AppUtils.userConvert(userService.getUserByUserName(loggedUser.getUsername())));
 
-        model.addAttribute("users", listOfUsers);
-        model.addAttribute("title", "Personal Cabinet");
-        model.addAttribute("message", "Personal data:");
+        model.addAttribute(USERS, listOfUsers);
+        model.addAttribute(TITLE, "Personal Cabinet");
+        model.addAttribute(MESSAGE, "Personal data:");
         return "personalCab";
     }
 
