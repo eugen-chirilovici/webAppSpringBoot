@@ -1,5 +1,6 @@
 package app.mvc.util;
 
+import app.mvc.dto.CredentialsDTO;
 import app.mvc.model.Credentials;
 import app.mvc.model.enums.RoleType;
 
@@ -24,6 +25,11 @@ public class CredentialsUtils {
                 .username("admin")
                 .role(RoleType.ROLE_ADMIN)
                 .build();
+    }
+
+    public static CredentialsDTO createCredentialsForAdminRoleDTO() {
+        Credentials cred = createCredentialsForAdminRole();
+            return new CredentialsDTO(cred.getUsername(), cred.getPassword());
     }
 
     public static Optional<Credentials> getByUsername() {

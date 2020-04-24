@@ -52,4 +52,9 @@ public class CredentialsDAO {
                 .filter(t -> t.getUsername().equals(login))
                 .findAny();
     }
+
+    public boolean adminValidator(long input) {
+        return listOfCredentials.get((int) input).getRole().equals(RoleType.ROLE_ADMIN);
+    }
+
 }

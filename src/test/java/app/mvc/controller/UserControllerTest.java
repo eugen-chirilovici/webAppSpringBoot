@@ -1,23 +1,26 @@
 package app.mvc.controller;
 
 
+import app.mvc.model.User;
 import app.mvc.service.UserService;
 import app.mvc.util.UserUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -27,7 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest()
+@SpringBootTest
+@WebAppConfiguration
 public class UserControllerTest {
     @InjectMocks
     private UserController userController;
@@ -37,8 +41,11 @@ public class UserControllerTest {
     @Autowired
     private WebApplicationContext context;
 
-    @Mock
+    @MockBean
     private UserService userService;
+
+    @MockBean
+    private org.springframework.security.core.userdetails.User user;
 
     @Before
     public void contextLoads() {
@@ -51,6 +58,7 @@ public class UserControllerTest {
                 .apply(springSecurity())
                 .build();
     }
+
 
     @Test
     public void shouldPrintWelcome() throws Exception {
@@ -81,13 +89,12 @@ public class UserControllerTest {
     public void shouldReturnAdminCab() throws Exception {
         when(userService.getAllUsers()).thenReturn(UserUtils.createUserList());
 
-        mockMvc.perform(get("/allusers"))
+       this.mockMvc.perform(get("/allusers"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("adminCab"))
                 .andExpect(model().attributeExists("users"))
                 .andExpect(model().attributeExists("title"))
                 .andExpect(model().attributeExists("message"));
-
     }
 
     @Test
@@ -96,5 +103,19 @@ public class UserControllerTest {
         mockMvc.perform(get("/allusers"))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    @WithMockUser()
+    public void shouldNReturnPersonal() throws Exception {
+        User loggedUser = UserUtils.createUser();
+
+        when(user.getUsername()).thenReturn(loggedUser.getFirstName());
+        when(userService.getUserByUserName(anyString())).thenReturn(loggedUser);
+
+        this.mockMvc.perform(get("/personal"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("personalCab"));
+    }
+
 
 }

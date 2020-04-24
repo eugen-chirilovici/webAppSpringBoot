@@ -1,5 +1,6 @@
 package app.mvc.util;
 
+import app.mvc.dto.UserDTO;
 import app.mvc.model.User;
 
 import java.util.Arrays;
@@ -34,4 +35,11 @@ public class UserUtils {
         return Arrays.asList(user1, user2);
     }
 
+    public static UserDTO userDTO() {
+        return UserDTO.builder()
+                .userId(1L)
+                .firstName("test")
+                .lastName("user")
+                .build();
+                    }
 }

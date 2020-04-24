@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.event.annotation.PrepareTestInstance;
 
 import java.util.Optional;
 
@@ -55,6 +56,8 @@ public class UserServiceTest {
 
         verify(usersDAO).findUserById(expectedUser.getUserId());
         assertEquals(expectedUser, actualUser);
+
+
     }
 
 
