@@ -22,7 +22,7 @@
         <start-class>app.Application</start-class>
         <spring.version>2.1.6.RELEASE</spring.version>
         <springsecurity.version>2.1.6.RELEASE</springsecurity.version>
-        <springweb.version>2.1.1.RELEASE</springweb.version>
+        <springweb.version>2.5.12</springweb.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
